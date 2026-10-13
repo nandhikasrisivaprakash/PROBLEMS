@@ -1,0 +1,34 @@
+int lengthOfLongestSubstring(char* s) {
+    // FIXED: Added [256] to make this a true array of 256 integers
+    int lastIndex[256];
+    
+    // Initialize all positions to -1 (meaning not yet seen)
+    for (int i = 0; i < 256; i++) {
+        lastIndex[i] = -1;
+    }
+    
+    int maxLength = 0;
+    int left = 0; // Left boundary of the sliding window
+    
+    // Traverse the string using the 'right' pointer
+    for (int right = 0; s[right] != '\0'; right++) {
+        unsigned char currentChar = s[right];
+        
+        // If the character was seen inside the current window,
+        // move the left pointer past its previous occurrence
+        if (lastIndex[currentChar] >= left) {
+            left = lastIndex[currentChar] + 1;
+        }
+        
+        // Record/update the index where this character was last seen
+        lastIndex[currentChar] = right;
+        
+        // Calculate the current window size and update max length
+        int currentLength = right - left + 1;
+        if (currentLength > maxLength) {
+            maxLength = currentLength;
+        }
+    }
+    
+    return maxLength;
+}
